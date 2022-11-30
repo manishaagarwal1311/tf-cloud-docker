@@ -1,11 +1,22 @@
 terraform {
-  # This module is now only being tested with Terraform 0.13.x. However, to make upgrading easier, we are setting
-  # 0.12.26 as the minimum version, as that version added support for required_providers with source URLs, making it
-  # forwards compatible with 0.13.x code.
-  required_version = ">= 0.12.26"
+  required_providers {
+    powermax = {
+       version = "0.0.1"
+      source  = "dell/powermax"
+    }
+  }
 }
 
-# website::tag::1:: The simplest possible Terraform module: it just outputs "Hello, World!"
-output "hello_world" {
-  value = "Hello, World!"
+provider "powermax" {
+  username = var.username
+  password = var.password
+  endpoint = var.endpoint
+  serial_number = var.serial_number
+  insecure = true
+}
+
+resource "powermax_storage_group" "storage_group_2" {
+	name = "sg_tf_cloud"
+	srpid = "SRP_1"
+	service_level = "Diamond"
 }
